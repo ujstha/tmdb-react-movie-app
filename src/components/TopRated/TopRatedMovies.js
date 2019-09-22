@@ -1,13 +1,15 @@
 import React, { Component } from "react";
 import axios from "axios";
+import { CircularProgress } from "@material-ui/core";
 import { BASE_URL, API_KEY } from "../../credentials";
 
 class TopRatedMovies extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      topRatedMovieList: [],
       page: 1,
-      topRatedMovieList: []
+      loading: true
     };
   }
   componentDidMount() {
@@ -18,12 +20,21 @@ class TopRatedMovies extends Component {
       .then(res => {
         console.log(res.data);
         this.setState({
-          topRatedMovieList: res.data.results
+          topRatedMovieList: res.data.results,
+          loading: false
         });
       });
   }
   render() {
-    const { topRatedMovieList } = this.state;
+    const { topRatedMovieList, loading } = this.state;
+
+    if (loading) {
+      return (
+        <div style={{ position: "absolute", top: "46%", left: "46%" }}>
+          <CircularProgress color="secondary" />
+        </div>
+      );
+    }
     return (
       <div>
         <div className="row">

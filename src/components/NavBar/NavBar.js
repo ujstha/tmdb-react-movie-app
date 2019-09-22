@@ -1,6 +1,18 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { AppBar, Toolbar, Typography, InputBase, ClickAwayListener, Tooltip, Button } from "@material-ui/core";
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  InputBase,
+  Button,
+  Popper,
+  Grow,
+  Paper,
+  MenuList,
+  MenuItem,
+  ClickAwayListener
+} from "@material-ui/core";
 import { fade } from "@material-ui/core/styles/colorManipulator";
 import { withStyles } from "@material-ui/core/styles";
 import SearchIcon from "@material-ui/icons/Search";
@@ -9,9 +21,13 @@ const styles = theme => ({
   root: {
     width: "100%",
     marginBottom: 56,
+    display: "flex",
     [theme.breakpoints.up("sm")]: {
       marginBottom: 65
     }
+  },
+  paper: {
+    marginRight: theme.spacing(2)
   },
   grow: {
     flexGrow: 1
@@ -73,20 +89,27 @@ const styles = theme => ({
 });
 
 class NavBar extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
-      openToolTip: false
-    }
+      open: false
+    };
   }
-  handleTooltipClose = () => {
-    this.setState({ openToolTip: false });
+
+  handleToggle = () => {
+    this.setState({ open: !this.state.open });
   };
 
-  handleTooltipOpen = () => {
-    this.setState({ openToolTip: true });
+  handleClose = event => {
+    if (this.anchorEl.contains(event.target)) {
+      return;
+    }
+
+    this.setState({ open: false });
   };
+
   render() {
+    const { open } = this.state;
     const { classes } = this.props;
     return (
       <div className={classes.root}>
@@ -117,24 +140,58 @@ class NavBar extends Component {
                 </form>
               </div>
             </Typography>
-            <div className={classes.language} style={{position: 'absolute', right: 10}}>
-              <ClickAwayListener onClickAway={this.handleTooltipClose}>
-                <div>
-                  <Tooltip
-                    PopperProps={{
-                      disablePortal: true,
+            <div
+              className={classes.language}
+              style={{ position: "absolute", right: 10 }}
+            >
+              <Button
+                buttonRef={node => {
+                  this.anchorEl = node;
+                }}
+                aria-owns={open ? "menu-list-grow" : undefined}
+                aria-haspopup="true"
+                onClick={this.handleToggle}
+                color="inherit"
+                style={{ textTransform: "uppercase" }}
+              >
+                {this.props.language}
+              </Button>
+              <Popper
+                open={open}
+                anchorEl={this.anchorEl}
+                transition
+                disablePortal
+              >
+                {({ TransitionProps, placement }) => (
+                  <Grow
+                    {...TransitionProps}
+                    id="menu-list-grow"
+                    style={{
+                      transformOrigin:
+                        placement === "bottom" ? "center top" : "center bottom"
                     }}
-                    onClose={this.handleTooltipClose}
-                    open={this.state.openToolTip}
-                    disableFocusListener
-                    disableHoverListener
-                    disableTouchListener
-                    title="Add"
                   >
-                    <Button onClick={this.handleTooltipOpen} color="inherit">Click</Button>
-                  </Tooltip>
-                </div>
-              </ClickAwayListener>
+                    <Paper>
+                      <ClickAwayListener onClickAway={this.handleClose}>
+                        <MenuList>
+                          <MenuItem
+                            id="en"
+                            onClick={this.props.handleLangChange}
+                          >
+                            EN
+                          </MenuItem>
+                          <MenuItem
+                            id="ru"
+                            onClick={this.props.handleLangChange}
+                          >
+                            RU
+                          </MenuItem>
+                        </MenuList>
+                      </ClickAwayListener>
+                    </Paper>
+                  </Grow>
+                )}
+              </Popper>
             </div>
           </Toolbar>
         </AppBar>

@@ -1,14 +1,14 @@
 import React, { Component } from "react";
-import { Tabs, Tab, Typography, CircularProgress } from "@material-ui/core";
+import axios from "axios";
+import { BASE_URL, API_KEY } from "./credentials";
+import { Tabs, Tab, Typography } from "@material-ui/core";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import NavBar from "./components/NavBar/NavBar";
 import PopularMovies from "./components/Popular/PopularMovies";
 import TopRatedMovies from "./components/TopRated/TopRatedMovies";
 import UpcomingMovies from "./components/Upcoming/UpcomingMovies";
-
+import AllMovies from "./components/AllMovie/AllMovies";
 import "./App.css";
-import axios from "axios";
-import { BASE_URL, API_KEY } from "./credentials";
 
 const theme = createMuiTheme({
   typography: {
@@ -22,7 +22,7 @@ class App extends Component {
     this.state = {
       listType: "popular",
       movieSearchList: [],
-      language: 'ru',
+      language: 'en',
       query: "",
       page: 1,
       hide: false
@@ -33,7 +33,7 @@ class App extends Component {
     e.preventDefault();
     axios
       .get(
-        `${BASE_URL}/search/movie?api_key=${API_KEY}&query=${this.state.query}&page=${this.state.page}`
+        `${BASE_URL}/search/movie?api_key=${API_KEY}&query=${this.state.query}&page=${this.state.page}&language=${this.state.language}`
       )
       .then(res => {
         console.log(res);
@@ -44,8 +44,15 @@ class App extends Component {
       });
   };
 
+  handleLangChange = e => {
+    this.setState({language: e.target.id});
+  }
+
   onInputChange = e => {
     this.setState({ [e.target.name]: e.target.value });
+    if(e.target.value === "") {
+      this.setState({hide: false})
+    }
   };
 
   handleChange = (event, listType) => {
@@ -53,15 +60,17 @@ class App extends Component {
   };
 
   render() {
-    const { listType, hide } = this.state;
+    const { listType, hide, language, query } = this.state;
     
     return (
       <MuiThemeProvider theme={theme}>
         <div>
           <NavBar
-            query={this.state.query}
+            language={language}
+            query={query}
             onChange={this.onInputChange}
             onSubmit={this.search}
+            handleLangChange={this.handleLangChange}
           />
           <div className="container">
             <div
@@ -80,21 +89,28 @@ class App extends Component {
             </div>
             {hide === false && listType === "popular" ? (
               <Typography component="div">
-                <PopularMovies language={this.state.language} />
+                <PopularMovies language={language} />
               </Typography>
             ) : (
               ""
             )}
             {hide === false && listType === "top_rated" ? (
               <Typography component="div">
-                <TopRatedMovies language={this.state.language} />
+                <TopRatedMovies language={language} />
               </Typography>
             ) : (
               ""
             )}
             {hide === false && listType === "upcoming" ? (
               <Typography component="div">
-                <UpcomingMovies language={this.state.language} />
+                <UpcomingMovies language={language} />
+              </Typography>
+            ) : (
+              ""
+            )}
+            {hide ? (
+              <Typography component="div" style={{marginTop: 85}}>
+                <AllMovies query={query} language={language} />
               </Typography>
             ) : (
               ""

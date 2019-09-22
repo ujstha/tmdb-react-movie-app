@@ -1,14 +1,14 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { CircularProgress  } from "@material-ui/core";
+import { CircularProgress } from "@material-ui/core";
 import { BASE_URL, API_KEY } from "../../credentials";
 
 class UpcomingMovies extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      page: 1,
       upcomingMovieList: [],
+      page: 1,
       loading: true
     };
   }
@@ -30,10 +30,10 @@ class UpcomingMovies extends Component {
 
     if (loading) {
       return (
-        <div style={{position: 'absolute', top: '46%', left: '46%'}}>
+        <div style={{ position: "absolute", top: "46%", left: "46%" }}>
           <CircularProgress color="secondary" />
         </div>
-      )
+      );
     }
     return (
       <div>
