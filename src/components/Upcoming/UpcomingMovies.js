@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import { CircularProgress } from "@material-ui/core";
 import { BASE_URL, API_KEY } from "../../credentials";
@@ -42,8 +43,16 @@ class UpcomingMovies extends Component {
             return (
               <div
                 key={index}
-                className="col-6 offset-3 offset-md-0 offset-xs-3 col-md-3"
+                className="col-8 offset-2 offset-md-0 offset-xs-3 col-md-3 p-2"
               >
+                <Link to={`/movie/${movie.id}`}>
+                  <img
+                    src={this.props.imageBaseUrl + movie.poster_path}
+                    alt={movie.title}
+                    width="inherit"
+                  />
+                </Link>
+                <br />
                 {movie.title}
               </div>
             );

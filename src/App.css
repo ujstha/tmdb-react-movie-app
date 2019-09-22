@@ -1,7 +1,7 @@
 body {
   font-family: 'Raleway', sans-serif;
 }
-.tab-centered, .NavBar-search-3 {
+.tab-centered, .NavBar-search-3, .col-6.movie-container {
   float: none;
   margin: 0 auto;
 }
