@@ -24,11 +24,12 @@ class AllMovies extends Component {
                   <img
                     src={this.props.imageBaseUrl + `${movie.poster_path}`}
                     alt={movie.title}
-                    width="inherit"
                   />
                 </Link>
                 <br />
-                {movie.title}
+                <div style={{ maxWidth: 200 }}>
+                  <Link to={`/movie/${movie.id}`}>{movie.title}</Link>
+                </div>
               </div>
             );
           })}

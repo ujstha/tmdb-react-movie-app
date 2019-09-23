@@ -8,18 +8,27 @@ class SingleMovie extends Component {
     super(props);
     this.state = {
       singleMovieDetail: null,
+      images: [],
       loading: true
     };
   }
   componentDidMount() {
+    const BASE_LINK = `${BASE_URL}/movie/${this.props.match.params.movie_id}`;
     axios
-      .get(
-        `${BASE_URL}/movie/${this.props.match.params.movie_id}?api_key=${API_KEY}&language=${this.props.language}`
-      )
+      .get(`${BASE_LINK}?api_key=${API_KEY}&language=${this.props.language}`)
       .then(res => {
         console.log(res.data);
         this.setState({
           singleMovieDetail: res.data,
+          loading: false
+        });
+      });
+    axios
+      .get(`${BASE_LINK}/images?api_key=${API_KEY}&language=${null}`)
+      .then(res => {
+        console.log(res.data);
+        this.setState({
+          images: res.data,
           loading: false
         });
       });
@@ -38,7 +47,6 @@ class SingleMovie extends Component {
       <div>
         <div className="row">
           <div
-            key={singleMovieDetail.id}
             className="col-6 offset-3 offset-md-0 offset-xs-3 col-md-3"
           >
             {singleMovieDetail.title}

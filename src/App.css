@@ -1,12 +1,37 @@
 body {
-  font-family: 'Raleway', sans-serif;
+  font-family: "Raleway", sans-serif;
+
+  color: #fff;
 }
-.tab-centered, .NavBar-search-3, .col-6.movie-container {
+.tab-centered,
+.NavBar-search-3,
+.movie-container > .col-md-12 {
   float: none;
   margin: 0 auto;
 }
 .tab-container {
-  background-color: rgba(63,81,181, .9);
+  background-color: rgba(63, 81, 181, 0.9);
   color: #fff;
   margin-bottom: 20px;
+}
+a,
+a:hover {
+  text-decoration: none;
+}
+.movie-poster > a > img {
+  width: 100%;
+}
+.movie-poster-container {
+  position: relative;
+}
+.vote-average {
+  position: absolute;
+  top: 10px;
+  left: -5px;
+  display: block;
+  background-color: rgba(63, 81, 181, 1);
+  padding: 1px 10px 1px 10px;
+}
+.movie-title {
+  max-width: 300px;
 }

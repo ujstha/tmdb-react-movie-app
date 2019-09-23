@@ -113,6 +113,7 @@ class NavBar extends Component {
     const { classes } = this.props;
     return (
       <div className={classes.root}>
+        {console.log(this.props)}
         <AppBar>
           <Toolbar>
             <Typography
@@ -134,7 +135,7 @@ class NavBar extends Component {
                       input: classes.inputInput
                     }}
                     name="query"
-                    value={this.props.query}
+                    value={this.props.query || ''}
                     onChange={this.props.onChange}
                   />
                 </form>
@@ -152,6 +153,7 @@ class NavBar extends Component {
                 aria-haspopup="true"
                 onClick={this.handleToggle}
                 color="inherit"
+                variant="outlined"
                 style={{ textTransform: "uppercase" }}
               >
                 {this.props.language}

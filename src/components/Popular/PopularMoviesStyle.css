@@ -1,0 +1,16 @@
+.movie-poster-container {
+  position: relative;
+}
+.movie-poster-hover {
+    min-height: 300;
+    min-width: 200;
+    position: absolute;
+    top: 10px;
+    left: -5px;
+    display: block;
+    background-color: rgba(63, 81, 181, 1);
+    padding: 1px 10px 1px 10px;
+  }
+  .movie-poster-container:hover .movie-poster-hover {
+      display: block;
+  }

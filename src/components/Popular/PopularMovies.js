@@ -25,6 +25,7 @@ class PopularMovies extends Component {
           loading: false
         });
       });
+    console.log(this, "this");
   }
   render() {
     const { popularMovieList, loading } = this.state;
@@ -45,15 +46,21 @@ class PopularMovies extends Component {
                 key={index}
                 className="col-8 offset-2 offset-md-0 offset-xs-3 col-md-3 p-2"
               >
-                <Link to={`/movie/${movie.id}`}>
-                  <img
-                    src={this.props.imageBaseUrl + movie.poster_path}
-                    alt={movie.title}
-                    width="inherit"
-                  />
-                </Link>
-                <br />
-                {movie.title}
+                <div className="movie-poster-container">
+                  <div className="movie-poster">
+                    <Link to={`/movie/${movie.id}`}>
+                      <img
+                        className="poster"
+                        src={this.props.imageBaseUrl + `${movie.poster_path}`}
+                        alt={movie.title}
+                      />
+                    </Link>
+                  </div>
+                  <div className="vote-average">{movie.vote_average}</div>
+                </div>
+                <div className="movie-title">
+                  <Link to={`/movie/${movie.id}`}>{movie.title}</Link>
+                </div>
               </div>
             );
           })}

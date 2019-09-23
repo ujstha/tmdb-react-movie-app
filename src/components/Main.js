@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import { BASE_URL, API_KEY, IMAGE_BASE_URL } from "../credentials";
-import { Tabs, Tab, Typography } from "@material-ui/core";
+import { Tabs, Tab } from "@material-ui/core";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import NavBar from "./NavBar/NavBar";
 import PopularMovies from "./Popular/PopularMovies";
@@ -30,8 +30,34 @@ class Main extends Component {
     };
   }
 
+  componentDidMount() {
+    const query = new URLSearchParams(this.props.location.search);
+    const searchParam = query.get("query");
+    this.setState({ query: searchParam });
+
+    if (searchParam === "" || this.props.location.search === "") {
+      return this.props.history.push(``);
+    } else {
+      axios
+        .get(
+          `${BASE_URL}/search/movie?api_key=${API_KEY}&query=${searchParam}&page=${this.state.page}&language=${this.state.language}`
+        )
+        .then(res => {
+          console.log(res);
+          this.setState({
+            movieSearchList: res.data.results,
+            responseData: res.data,
+            hide: true,
+            loading: false
+          });
+          console.log(this.props);
+        });
+    }
+  }
+
   search = e => {
     e.preventDefault();
+    this.props.history.push(`/?query=${this.state.query}`);
     axios
       .get(
         `${BASE_URL}/search/movie?api_key=${API_KEY}&query=${this.state.query}&page=${this.state.page}&language=${this.state.language}`
@@ -44,11 +70,8 @@ class Main extends Component {
           hide: true,
           loading: false
         });
+        console.log(this.props);
       });
-  };
-
-  handlePageChange = () => {
-    this.setState({ page: this.state.page + 1 });
   };
 
   handleLangChange = e => {
@@ -59,6 +82,7 @@ class Main extends Component {
     this.setState({ [e.target.name]: e.target.value });
     if (e.target.value === "") {
       this.setState({ hide: false });
+      this.props.history.push(`/`);
     }
   };
 
@@ -102,43 +126,35 @@ class Main extends Component {
               </Tabs>
             </div>
             {hide === false && listType === "popular" ? (
-              <Typography component="div">
-                <PopularMovies
-                  language={language}
-                  imageBaseUrl={IMAGE_BASE_URL}
-                />
-              </Typography>
+              <PopularMovies
+                language={language}
+                imageBaseUrl={IMAGE_BASE_URL}
+              />
             ) : (
               ""
             )}
             {hide === false && listType === "top_rated" ? (
-              <Typography component="div">
-                <TopRatedMovies
-                  language={language}
-                  imageBaseUrl={IMAGE_BASE_URL}
-                />
-              </Typography>
+              <TopRatedMovies
+                language={language}
+                imageBaseUrl={IMAGE_BASE_URL}
+              />
             ) : (
               ""
             )}
             {hide === false && listType === "upcoming" ? (
-              <Typography component="div">
-                <UpcomingMovies
-                  language={language}
-                  imageBaseUrl={IMAGE_BASE_URL}
-                />
-              </Typography>
+              <UpcomingMovies
+                language={language}
+                imageBaseUrl={IMAGE_BASE_URL}
+              />
             ) : (
               ""
             )}
             {hide ? (
-              <Typography component="div" style={{ marginTop: 85 }}>
-                <AllMovies
-                  allMovieList={movieSearchList}
-                  loading={loading}
-                  imageBaseUrl={IMAGE_BASE_URL}
-                />
-              </Typography>
+              <AllMovies
+                allMovieList={movieSearchList}
+                loading={loading}
+                imageBaseUrl={IMAGE_BASE_URL}
+              />
             ) : (
               ""
             )}
