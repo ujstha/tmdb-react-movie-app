@@ -9,6 +9,7 @@ class SingleMovie extends Component {
     this.state = {
       singleMovieDetail: null,
       images: [],
+      credits: [],
       loading: true
     };
   }
@@ -32,6 +33,15 @@ class SingleMovie extends Component {
           loading: false
         });
       });
+      axios
+      .get(`${BASE_LINK}/credits?api_key=${API_KEY}&language=${null}`)
+      .then(res => {
+        console.log(res.data);
+        this.setState({
+          credits: res.data,
+          loading: false
+        });
+      });
   }
   render() {
     const { singleMovieDetail, loading } = this.state;
@@ -47,6 +57,7 @@ class SingleMovie extends Component {
       <div>
         <div className="row">
           <div
+            key={singleMovieDetail.id}
             className="col-6 offset-3 offset-md-0 offset-xs-3 col-md-3"
           >
             {singleMovieDetail.title}

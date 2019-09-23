@@ -9,6 +9,7 @@ class PopularMovies extends Component {
     super(props);
     this.state = {
       popularMovieList: [],
+      genres: [],
       page: 1,
       loading: true
     };
@@ -25,10 +26,20 @@ class PopularMovies extends Component {
           loading: false
         });
       });
-    console.log(this, "this");
+    axios
+      .get(
+        `${BASE_URL}/genre/movie/list?api_key=${API_KEY}&page=${this.state.page}&language=${this.props.language}`
+      )
+      .then(res => {
+        console.log(res.data.genres);
+        this.setState({
+          genres: res.data.genres,
+          loading: false
+        });
+      });
   }
   render() {
-    const { popularMovieList, loading } = this.state;
+    const { popularMovieList, genres, loading } = this.state;
 
     if (loading) {
       return (
@@ -54,12 +65,27 @@ class PopularMovies extends Component {
                         src={this.props.imageBaseUrl + `${movie.poster_path}`}
                         alt={movie.title}
                       />
+                      <div className="middle">
+                        <div>hello</div>
+                      </div>
                     </Link>
                   </div>
                   <div className="vote-average">{movie.vote_average}</div>
                 </div>
                 <div className="movie-title">
                   <Link to={`/movie/${movie.id}`}>{movie.title}</Link>
+                </div>
+                <div className="genre">
+                  {movie.genre_ids.map((genre, index) => (
+                    <small key={index}>
+                      {genres.map((genreName, index) => (
+                        <Link to={`/genres/${genreName.id}`} key={index}>
+                          {genre === genreName.id ? genreName.name : ""}
+                        </Link>
+                      ))}{" "}
+                      &nbsp;
+                    </small>
+                  ))}
                 </div>
               </div>
             );

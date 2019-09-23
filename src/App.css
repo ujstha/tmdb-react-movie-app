@@ -1,22 +1,25 @@
 body {
   font-family: "Raleway", sans-serif;
-
+  background-color: #141414;
   color: #fff;
 }
+header.MuiPaper-root.MuiPaper-elevation4.MuiAppBar-root.MuiAppBar-positionFixed.MuiAppBar-colorPrimary.mui-fixed {
+  background-color: #1f1f1f;
+}
 .tab-centered,
-.NavBar-search-3,
-.movie-container > .col-md-12 {
+.NavBar-search-3 {
   float: none;
   margin: 0 auto;
 }
 .tab-container {
-  background-color: rgba(63, 81, 181, 0.9);
+  background-color: /*rgba(63, 81, 181, 0.9);*/ #141414;
   color: #fff;
   margin-bottom: 20px;
 }
 a,
 a:hover {
   text-decoration: none;
+  color: #fff;
 }
 .movie-poster > a > img {
   width: 100%;
@@ -26,12 +29,48 @@ a:hover {
 }
 .vote-average {
   position: absolute;
+  display: block;
   top: 10px;
   left: -5px;
-  display: block;
-  background-color: rgba(63, 81, 181, 1);
   padding: 1px 10px 1px 10px;
+  background-color: rgba(63, 81, 181, 1);
+  color: #fff;
 }
 .movie-title {
   max-width: 300px;
+}
+.genre a {
+  color: darkgrey;
+  font-size: 15px;
+}
+.genre a:hover {
+  color: grey;
+}
+.poster {
+  opacity: 1;
+  display: block;
+  width: 100%;
+  height: auto;
+  transition: 0.5s ease;
+  backface-visibility: hidden;
+}
+.middle {
+  transition: 0.5s ease;
+  opacity: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  text-align: center;
+}
+.movie-poster {
+  overflow: hidden;
+}
+.movie-poster-container:hover .poster {
+  opacity: 0.3;
+  transform: scale(1.2);
+}
+.movie-poster-container:hover .middle {
+  opacity: 1;
 }
