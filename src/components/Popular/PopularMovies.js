@@ -65,8 +65,15 @@ class PopularMovies extends Component {
                         src={this.props.imageBaseUrl + `${movie.poster_path}`}
                         alt={movie.title}
                       />
-                      <div className="middle">
-                        <div>hello</div>
+                      <div className="hover-icon">
+                        <div className="read-more">
+                          <i
+                            className="material-icons"
+                            style={{ fontSize: 40 }}
+                          >
+                            menu
+                          </i>
+                        </div>
                       </div>
                     </Link>
                   </div>
@@ -76,16 +83,21 @@ class PopularMovies extends Component {
                   <Link to={`/movie/${movie.id}`}>{movie.title}</Link>
                 </div>
                 <div className="genre">
-                  {movie.genre_ids.map((genre, index) => (
-                    <small key={index}>
-                      {genres.map((genreName, index) => (
-                        <Link to={`/genres/${genreName.id}`} key={index}>
-                          {genre === genreName.id ? genreName.name : ""}
-                        </Link>
-                      ))}{" "}
-                      &nbsp;
-                    </small>
-                  ))}
+                  <small>
+                    {genres.map((genreName, index) => (
+                      <Link to={`/genres/${genreName.id}`} key={index}>
+                        {movie.genre_ids[0] === genreName.id ||
+                        movie.genre_ids[1] === genreName.id ||
+                        movie.genre_ids[2] === genreName.id ||
+                        movie.genre_ids[3] === genreName.id ||
+                        movie.genre_ids[4] === genreName.id ||
+                        movie.genre_ids[5] === genreName.id ||
+                        movie.genre_ids[6] === genreName.id
+                          ? <span>{(index ? ' ' : '') + genreName.name}</span>
+                          : ""}
+                      </Link>
+                    ))}
+                  </small>
                 </div>
               </div>
             );

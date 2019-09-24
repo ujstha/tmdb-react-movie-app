@@ -7,7 +7,7 @@ class SingleMovie extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      singleMovieDetail: null,
+      singleMovieDetail: [],
       images: [],
       credits: [],
       loading: true
@@ -16,7 +16,9 @@ class SingleMovie extends Component {
   componentDidMount() {
     const BASE_LINK = `${BASE_URL}/movie/${this.props.match.params.movie_id}`;
     axios
-      .get(`${BASE_LINK}?api_key=${API_KEY}&language=${this.props.language}`)
+      .get(
+        `${BASE_URL}/movie/${this.props.match.params.movie_id}?api_key=${API_KEY}&language=en-US`
+      )
       .then(res => {
         console.log(res.data);
         this.setState({
@@ -26,20 +28,18 @@ class SingleMovie extends Component {
       });
     axios
       .get(`${BASE_LINK}/images?api_key=${API_KEY}&language=${null}`)
-      .then(res => {
-        console.log(res.data);
+      .then(imageRes => {
+        console.log(imageRes.data);
         this.setState({
-          images: res.data,
-          loading: false
+          images: imageRes.data
         });
       });
-      axios
+    axios
       .get(`${BASE_LINK}/credits?api_key=${API_KEY}&language=${null}`)
-      .then(res => {
-        console.log(res.data);
+      .then(creditRes => {
+        console.log(creditRes.data);
         this.setState({
-          credits: res.data,
-          loading: false
+          credits: creditRes.data
         });
       });
   }
@@ -56,10 +56,7 @@ class SingleMovie extends Component {
     return (
       <div>
         <div className="row">
-          <div
-            key={singleMovieDetail.id}
-            className="col-6 offset-3 offset-md-0 offset-xs-3 col-md-3"
-          >
+          <div className="col-6 offset-3 offset-md-0 offset-xs-3 col-md-3">
             {singleMovieDetail.title}
             {singleMovieDetail.tagline}
           </div>

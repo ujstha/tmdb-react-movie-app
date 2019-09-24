@@ -9,6 +9,7 @@ class TopRatedMovies extends Component {
     super(props);
     this.state = {
       topRatedMovieList: [],
+      genres: [],
       page: 1,
       loading: true
     };
@@ -25,9 +26,20 @@ class TopRatedMovies extends Component {
           loading: false
         });
       });
+    axios
+      .get(
+        `${BASE_URL}/genre/movie/list?api_key=${API_KEY}&page=${this.state.page}&language=${this.props.language}`
+      )
+      .then(res => {
+        console.log(res.data.genres);
+        this.setState({
+          genres: res.data.genres,
+          loading: false
+        });
+      });
   }
   render() {
-    const { topRatedMovieList, loading } = this.state;
+    const { topRatedMovieList, loading, genres } = this.state;
 
     if (loading) {
       return (
@@ -53,12 +65,41 @@ class TopRatedMovies extends Component {
                         src={this.props.imageBaseUrl + `${movie.poster_path}`}
                         alt={movie.title}
                       />
+                      <div className="hover-icon">
+                        <div className="read-more">
+                          <i
+                            className="material-icons"
+                            style={{ fontSize: 40 }}
+                          >
+                            menu
+                          </i>
+                        </div>
+                      </div>
                     </Link>
                   </div>
                   <div className="vote-average">{movie.vote_average}</div>
                 </div>
                 <div className="movie-title">
                   <Link to={`/movie/${movie.id}`}>{movie.title}</Link>
+                </div>
+                <div className="genre">
+                  <small>
+                    {genres.map((genreName, index) => (
+                      <Link to={`/genres/${genreName.id}`} key={index}>
+                        {movie.genre_ids[0] === genreName.id ||
+                        movie.genre_ids[1] === genreName.id ||
+                        movie.genre_ids[2] === genreName.id ||
+                        movie.genre_ids[3] === genreName.id ||
+                        movie.genre_ids[4] === genreName.id ||
+                        movie.genre_ids[5] === genreName.id ||
+                        movie.genre_ids[6] === genreName.id ? (
+                          <span>{(index ? " " : "") + genreName.name}</span>
+                        ) : (
+                          ""
+                        )}
+                      </Link>
+                    ))}
+                  </small>
                 </div>
               </div>
             );

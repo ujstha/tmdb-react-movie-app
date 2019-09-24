@@ -152,7 +152,9 @@ class Main extends Component {
             {hide ? (
               <AllMovies
                 allMovieList={movieSearchList}
+                query={query}
                 loading={loading}
+                language={language}
                 imageBaseUrl={IMAGE_BASE_URL}
               />
             ) : (
